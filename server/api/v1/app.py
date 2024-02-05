@@ -16,10 +16,9 @@ from models.project import Project
 from models.skill import Skill
 from models.education import Education
 from models.experience import Experience
-from models.smart_url import SmartUrl
 
 # Import API views
-from api.v1.views.user_views import user_bp
+from api.v1.views.users_views import user_bp
 from api.v1.views.cv_views import cv_bp
 
 # Register blueprints
@@ -27,7 +26,7 @@ app.register_blueprint(user_bp, url_prefix='/api/v1/users')
 app.register_blueprint(cv_bp, url_prefix='/api/v1/cvs')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=0.0.0.0, port=3000 debug=True)
 
 
 
