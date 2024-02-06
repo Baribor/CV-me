@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 from flask import Blueprint, jsonify
 
-# Create a Blueprint instance for users
+
 user_bp = Blueprint('users', __name__)
 
 # Define routes within the Blueprint
