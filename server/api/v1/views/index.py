@@ -1,18 +1,24 @@
 #!/usr/bin/python3
-from flask import Blueprint, jsonify
 
-# Create a Blueprint instance
-app_views = Blueprint('app_views', __name__)
+from api.v1.views import app_views
+from flask import jsonify,Blueprint
+from flask import make_response
 
 
-@app_views.route('/', methods=['GET'])
-def index():
-    return jsonify({'message': 'Welcome to CV-me API'})
+user_bp = Blueprint('users', __name__)
+cv_bp = Blueprint('cv', __name__)
 
-from .user_views import user_bp
-from .cv_views import cv_bp
 
-# Register blueprints for other views
-app_views.register_blueprint(user_bp)
-app_views.register_blueprint(cv_bp)
+@app_views.route('/users', methods=['GET'], strict_slashes=False)
+def user_status():
+    """ Status of users"""
+    response_data = {"status": "OK"}
+    response = make_response(jsonify(response_data), 200)
+    return response
 
+@app_views.route('/users/profile', methods=['GET'])
+def view_profile():
+    """ Get user data"""
+    user = get_user_somehow()
+    profile_data = UserService.view_profile(user)
+    return jsonify(profile_data), 200
