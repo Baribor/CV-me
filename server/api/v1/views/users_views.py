@@ -1,16 +1,13 @@
 #!/usr/bin/python3
 from flask import Blueprint, jsonify
-from Service.user_service import UserService
+from service.user_service import UserService
+from api.v1.views import app_views
 
 
 user_bp = Blueprint('users', __name__)
 
-# Define routes within the Blueprint
-
-from flask import jsonify
-
-@app_views.route('/users/new_user/<user_data>', methods=['POST'])
-def create_new_user(user_data):
+@app_views.route('/new_user', methods=['POST'])
+def new_user(user_data):
     """ Create a new user"""
     new_user = UserService.create_user(user_data)
     if new_user:
@@ -19,8 +16,8 @@ def create_new_user(user_data):
         return jsonify({'error': 'Failed to create user'}), 500 
 
 
-@app_views.route('/users/profile/<int:user_id>', methods=['GET'])
-def get_user_profile(user_id):
+@app_views.route('/user_profile/<int:user_id>', methods=['GET'])
+def user_profile(user_id):
     """ Get user data"""
     profile_data = UserService.view_profile(user_id)
     if profile_data:
