@@ -8,7 +8,7 @@ const NavBar = () => {
 			{/* Logo */}
 			<div>
 				<Link to="/">
-					<span className="text-blue-700 font-extrabold font-[cursive] text-3xl">CV ME</span>
+					<span className="text-primary font-extrabold font-[cursive] text-3xl">CV ME</span>
 				</Link>
 			</div>
 
