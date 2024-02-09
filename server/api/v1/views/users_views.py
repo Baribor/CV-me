@@ -1,12 +1,24 @@
 #!/usr/bin/python3
-from flask import Blueprint, jsonify
+
+from api.v1.views import app_views,Blueprint
+from flask import Flask, jsonify, abort, request
 from service.user_service import UserService
-from api.v1.views import app_views
+from models.user import User
 
 
 user_bp = Blueprint('users', __name__)
 
-@app_views.route('/new_user', methods=['POST'])
+
+
+
+@app_views.route('/api/v1/users', methods= ['GET'])
+def users():
+    """ Status of users"""
+    response_data = {"status": "OK"}    
+    response = make_response(jsonify(response_data), 200)
+    return response
+
+@app_views.route('/api/v1/new_user/<user_data>', methods=['POST'])
 def new_user(user_data):
     """ Create a new user"""
     new_user = UserService.create_user(user_data)
@@ -16,7 +28,7 @@ def new_user(user_data):
         return jsonify({'error': 'Failed to create user'}), 500 
 
 
-@app_views.route('/user_profile/<int:user_id>', methods=['GET'])
+@app_views.route('/api/v1/user_profile/<int:user_id>', methods=['GET'])
 def user_profile(user_id):
     """ Get user data"""
     profile_data = UserService.view_profile(user_id)

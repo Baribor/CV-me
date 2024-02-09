@@ -17,3 +17,10 @@ def index():
     response_data = {"status": "OK"}
     response = make_response(jsonify(response_data), 200)
     return response
+
+@app_views.route('/api/v1/users', methods= ['GET'])
+def users():
+    """ Status of users"""
+    response_data = {"status": "OK"}
+    response = make_response(jsonify(response_data), 200)
+    return response
