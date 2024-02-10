@@ -7,7 +7,6 @@ from flask import make_response
 from service.user_service import UserService
 
 index_bp = Blueprint('index', __name__)
-user_bp = Blueprint('users', __name__)
 cv_bp = Blueprint('cv', __name__)
 
 
