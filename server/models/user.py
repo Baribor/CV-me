@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
 from .base import Base
+from sqlalchemy.orm import relationship
 
 
 db = SQLAlchemy()
@@ -23,6 +24,13 @@ class User(db.Model):
     last_name = db.Column(db.String(250),unique=True,nullable=False)
     age = db.Column(db.Integer, nullable=False)
     sex = db.Column(db.String(50), nullable=False)
+    
+class CV(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    createdAt = db.Column(db.DateTime, nullable=False)
+    UpdateddAt = db.Column(db.DateTime, nullable=False)
 
-    cvs = db.relationship('CV', backref='user', lazy=True)
+    user = db.relationship('User', backref=db.backref('cvs', lazy=True))
 
