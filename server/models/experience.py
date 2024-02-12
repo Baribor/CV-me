@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from base import Base
 from models.user import User
+from base import db
 
-
-db = SQLAlchemy()
 
 class Experience(db.Model):
     """Defines columns for model class"""

@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from base import BaseModel
 from sqlalchemy.orm import relationship
+from base import db
 
 
-db = SQLAlchemy()
-
-class User(db.Model):
+class User(db.BaseModel):
     """
     Represents a user in the system.
 

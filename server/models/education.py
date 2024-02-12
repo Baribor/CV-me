@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from base import BaseModel
 from models.user import User
+from base import db
 
 
-db = SQLAlchemy()
 
-class Education(db.Model):
+class Education(db.BaseModel):
     """Defines columns for education class"""
 
     id = db.Column(db.Integer, primary_key=True)

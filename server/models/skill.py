@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from base import BaseModel,db
 from models.user import User
 
 
-db = SQLAlchemy()
 
-class Skill(db.Model):
+class Skill(db.BaseModel):
     """Defines columns for skill class model"""
 
     id = db.Column(db.Integer, primary_key=True)

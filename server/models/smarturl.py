@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from base import BaseModel,db
 from models.user import User
 
 
-db = SQLAlchemy()
-
-class SmartUrl(db.Model):
+class SmartUrl(db.BaseModel):
     """Defines class model SmartUrl"""
 
     id = db.Column(db.Integer, primary_key=True)
