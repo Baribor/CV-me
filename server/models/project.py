@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from base import BaseModel
 from models.user import User
+from models.base import BaseModel
 from base import db
 
 

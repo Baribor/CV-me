@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from base import Base
+from models.base import Base
 from models.user import User
 from base import db
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from flask_sqlalchemy import SQLAlchemy
-from base import BaseModel
+from models.base import BaseModel
 from sqlalchemy.orm import relationship
 from base import db
 

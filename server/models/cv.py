@@ -2,10 +2,9 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+from mdels.base import BaseModel
 
-db = SQLAlchemy()
-
-class CV(db.Model):
+class CV(db.BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
