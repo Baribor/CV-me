@@ -1,19 +1,29 @@
 #!/usr/bin/python3
-
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from mdels.base import BaseModel
+from models.base import BaseModel
 
-class CV(db.BaseModel):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False)
-    UpdateddAt = db.Column(db.DateTime, nullable=False)
+class CV(BaseModel,Base):
+    __tablename__ = 'cvs'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    UpdateddAt = Column(DateTime, nullable=False)
 
     # Define the one-to-one relationships
-    project = db.relationship('Project', uselist=False, back_populates='cv')
-    skill = db.relationship('Skill', uselist=False, back_populates='cv')
-    education = db.relationship('Education', uselist=False, back_populates='cv')
-    experience = db.relationship('Experience', uselist=False, back_populates='cv')
-    smart_url = db.relationship('SmartUrl', uselist=False, back_populates='cv')
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    project = relationship('Project', back_populates='cv')
+
+    skill_id = Column(Integer, ForeignKey('skills.id'))
+    skill = relationship('Skill', back_populates='cv')
+
+    education_id = Column(Integer, ForeignKey('educations.id'))
+    education = relationship('Education', back_populates='cv')
+
+    experience_id = Column(Integer, ForeignKey('experiences.id'))
+    experience = relationship('Experience', back_populates='cv')
+
+    smart_url_id = Column(Integer, ForeignKey('smart_urls.id'))
+    smart_url = relationship('SmartUrl', back_populates='cv')

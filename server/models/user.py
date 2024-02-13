@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from models.base import BaseModel
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from base import db
+from models.base import BaseModel
 
-
-class User(db.BaseModel):
+class User(BaseModel,Base):
+    __tablename__ = 'users'
     """
     Represents a user in the system.
 
@@ -15,21 +14,13 @@ class User(db.BaseModel):
         email (str): The email address of the user.
         cvs (list): List of CVs associated with the user.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    password_hash = db.Column(db.String(250),unique=True,nullable=False)
-    first_name = db.Column(db.String(250),unique=True,nullable=False)
-    last_name = db.Column(db.String(250),unique=True,nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    sex = db.Column(db.String(50), nullable=False)
-    
-class CV(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False)
-    UpdateddAt = db.Column(db.DateTime, nullable=False)
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(150), unique=True, nullable=False)
+    password_hash = Column(String(250), unique=True, nullable=False)
+    first_name = Column(String(250), unique=True, nullable=False)
+    last_name = Column(String(250), unique=True, nullable=False)
+    age = Column(Integer, nullable=False)
+    sex = Column(String(50), nullable=False)
 
-    user = db.relationship('User', backref=db.backref('cvs', lazy=True))
-
+    cvs = relationship('CV', backref='user')

@@ -1,18 +1,16 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from models.base import BaseModel
-from models.user import User
-from base import db
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy.orm import relationship
+from models.base import BaseModel,Base
+from models.cv import CV
 
+class Education(BaseModel,Base):
+    __tablename__ = 'education'
 
-
-class Education(db.BaseModel):
-    """Defines columns for education class"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    institution = db.Column(db.String(100), nullable=False)
-    degree = db.Column(db.String(150), nullable=True)
-    startDate = db.Column(db.Date, nullable=False)
-    endDate = db.Column(db.Date, nullable=False)
-    cv_id = db.Column(db.Integer, db.ForeignKey('cv.id'), nullable=False)
-    cv = db.relationship('User.CV', back_populates='education')
+    id = Column(Integer, primary_key=True)
+    institution = Column(String(100), nullable=False)
+    degree = Column(String(150), nullable=True)
+    startDate = Column(Date, nullable=False)
+    endDate = Column(Date, nullable=False)
+    cv_id = Column(Integer, ForeignKey('cvs.id'), nullable=False)
+    cv = relationship('CV', back_populates='education')

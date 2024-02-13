@@ -1,15 +1,15 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from models.base import BaseModel,db
-from models.user import User
+from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP
+from sqlalchemy.orm import relationship
+from models.base import BaseModel,Base
+from models.cv import CV  
 
-
-class SmartUrl(db.BaseModel):
+class SmartUrl(BaseModel):
+    __tablename__ = 'smart_urls'
     """Defines class model SmartUrl"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    urlName = db.Column(db.String(150), nullable=False)
-    url = db.Column(db.String(150), nullable=False)
-    viewedAt = db.Column(db.Timestamp, nullable=False)
-    cv_id = db.Column(db.Integer, db.ForeignKey('cv.id'), nullable=False)
-    cv = db.relationship('User.CV', back_populates='project')
+    id = Column(Integer, primary_key=True)
+    urlName = Column(String(150), nullable=False)
+    url = Column(String(150), nullable=False)
+    viewedAt = Column(TIMESTAMP, nullable=False)
+    cv_id = Column(Integer, ForeignKey('cvs.id'), nullable=False)
+    cv = relationship('CV', back_populates='smart_url')

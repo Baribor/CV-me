@@ -1,17 +1,16 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from models.user import User
-from models.base import BaseModel
-from base import db
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy.orm import relationship
+from models.base import BaseModel,Base
+from models.cv import CV
 
+class Project(BaseModel,Base):
+    __tablename__ = 'projects'
 
-class Project(db.BaseModel):
-    """Defines Project class model"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    projectName = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.String(150), nullable=False)
-    startDate = db.Column(db.Date, nullable=False)
-    endDate = db.Column(db.Date, nullable=False)
-    cv_id = db.Column(db.Integer, db.ForeignKey('user.cv.id'), nullable=False)
-    cv = db.relationship('User.CV', back_populates='project')
+    id = Column(Integer, primary_key=True)
+    projectName = Column(String(150), nullable=False)
+    description = Column(String(150), nullable=False)
+    startDate = Column(Date, nullable=False)
+    endDate = Column(Date, nullable=False)
+    cv_id = Column(Integer, ForeignKey('cvs.id'), nullable=False)
+    cv = relationship('CV', back_populates='project')
