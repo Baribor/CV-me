@@ -8,11 +8,10 @@ from service.user_service import UserService
 
 
 @app_views.route("/users", methods=['POST'])
-def create_User():
+def create_user():
     """ Create a new user"""
     user_data = request.get_json()
     current_app.logger.debug(f"Received JSON data: {user_data}")
-
     sex = user_data.get('sex')
     current_app.logger.debug(f"Extracted sex field: {sex}")
 
@@ -34,4 +33,10 @@ def create_User():
         return jsonify(new_user), 201
     else:
         return jsonify({'error': 'Failed to create user'}), 500
+
+@app_views.route("/profile/<user_id>", method=['POST']
+def userprofile(user_id):
+    """ view profile"""
+    user_prof = UserServices.view_profile(user_id)
+
 
