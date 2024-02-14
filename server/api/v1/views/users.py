@@ -5,7 +5,7 @@ app_views Blueprint.
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request, make_response,current_app
 from service.user_service import UserService
-
+from models.user import User
 
 @app_views.route("/users", methods=['POST'])
 def create_user():
@@ -30,7 +30,8 @@ def create_user():
         sex
     )
     if new_user:
-        return jsonify(new_user), 201
+        user_dict = new_user.to_dict()
+        return jsonify(user_dict), 201
     else:
         return jsonify({'error': 'Failed to create user'}), 500
 
@@ -38,5 +39,9 @@ def create_user():
 def userprofile(user_id):
     """ view profile"""
     user_prof = UserServices.view_profile(user_id)
+    if user_prof:
+        return jsonify(user_prof), 200
+    else:
+        return jsonify({'error': 'User profile not found'}), 404
 
 
