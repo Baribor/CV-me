@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from models.user import User 
-from models.user import CV
+from models.cv import CV
 
 
 db = SQLAlchemy()
