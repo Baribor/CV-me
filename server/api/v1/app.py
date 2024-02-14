@@ -1,25 +1,24 @@
 #!/usr/bin/python3
 """ Flask Application """
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import make_response,jsonify
 from api.v1.views import app_views
-
+from models.base import Session
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cv_me_local:cv_me_pwd@localhost:5432/cv_me_local'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cv-me-db:cv-me-pwd@localhost:5432/cv-me-db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
 # Register blueprints
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
-
 
 @app.route('/api/v1/status', methods= ['GET'])
 def status():
@@ -38,6 +37,6 @@ def not_found(error):
     """
     return make_response(jsonify({'error': "Not found"}), 404)
 
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='3000', debug=True)                                               
+    app.run(host='0.0.0.0', port='3000', debug=True)
+                         

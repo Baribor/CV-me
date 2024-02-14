@@ -34,7 +34,7 @@ def create_user():
     else:
         return jsonify({'error': 'Failed to create user'}), 500
 
-@app_views.route("/profile/<user_id>", method=['POST']
+@app_views.route("/profile/<user_id>", methods=['POST'])
 def userprofile(user_id):
     """ view profile"""
     user_prof = UserServices.view_profile(user_id)
