@@ -1,20 +1,14 @@
 #!/usr/bin/python3
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from sqlalchemy.orm import relationship
-from models.base import BaseModel
+from models.base import BaseModel,Base
 
-class User(BaseModel,Base):
+class User(BaseModel, Base):
     __tablename__ = 'users'
-    """
-    Represents a user in the system.
 
-    Attributes:
-        id (int): The unique identifier for the user.
-        username (str): The username of the user.
-        email (str): The email address of the user.
-        cvs (list): List of CVs associated with the user.
-    """
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(150), unique=True, nullable=False)
     password_hash = Column(String(250), unique=True, nullable=False)
@@ -24,3 +18,14 @@ class User(BaseModel,Base):
     sex = Column(String(50), nullable=False)
 
     cvs = relationship('CV', backref='user')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'age': self.age,
+            'sex': self.sex
+        }
