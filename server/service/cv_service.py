@@ -1,60 +1,41 @@
-from flask_sqlalchemy import SQLAlchemy
-from models.user import User 
+from models.base import Session
 from models.cv import CV
+from models.user import User
 
-
-db = SQLAlchemy()
-
-class CvService:
+class CVService:
     @staticmethod
     def get_cv(user_id):
-        user = User.query.get(user_id)
+        user = Session().query(User).get(user_id)
         if not user:
             return None
         return user.cvs
 
     @staticmethod
     def create_cv(user_id, cv_data):
-        user = User.query.get(user_id)
+        user = Session().query(User).get(user_id)
         if not user:
             return None
         cv = CV(title=cv_data.get('title', ''))
         user.cvs.append(cv)
-        db.session.add(cv)
-        db.session.commit()
+        Session().add(cv)
+        Session().commit()
         return cv
 
     @staticmethod
     def delete_cv(cv_id):
-        cv = CV.query.get(cv_id)
+        cv = Session().query(CV).get(cv_id)
         if cv:
-            db.session.delete(cv)
-            db.session.commit()
+            Session().delete(cv)
+            Session().commit()
             return True
         return False
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    @staticmethod
+    def edit_cv(cv_id, new_data):
+        cv = Session().query(CV).get(cv_id)
+        if not cv:
+            return None
+        for key, value in new_data.items():
+            setattr(cv, key, value)
+        Session().commit()
+        return cv
