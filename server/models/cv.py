@@ -25,3 +25,12 @@ class CV(BaseModel, Base):
     experiences = relationship('Experience', backref='cv')
     skills = relationship('Skill', backref='cv')
     smart_urls = relationship('SmartUrl', backref='cv')
+
+    def to_dict(self):
+        return {
+            'cv_id': str(self.cv_id),
+            'title': self.title,
+            'user_id': str(self.user_id),
+            'createdAt': self.createdAt.isoformat(),
+            'UpdateddAt': self.UpdateddAt.isoformat(),
+        }
