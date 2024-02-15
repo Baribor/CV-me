@@ -11,16 +11,13 @@ from models.user import User
 def create_user():
     """ Create a new user"""
     user_data = request.get_json()
-    current_app.logger.debug(f"Received JSON data: {user_data}")
     sex = user_data.get('sex')
-    current_app.logger.debug(f"Extracted sex field: {sex}")
 
 
     if sex is None:
         return jsonify({'error': 'Sex field is missing'}), 400
 
     new_user = UserService.create_user(
-        user_data.get('id'),
         user_data.get('username'),
         user_data.get('first_name'),
         user_data.get('last_name'),
