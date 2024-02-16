@@ -46,12 +46,24 @@ def userprofile(user_id):
     """ view profile"""
     user_prof = UserService.view_profile(user_id)
     if user_prof:
-        user_prof_dict = new_prof.to_dict()
+        user_prof_dict = {
+            'id': user_prof.id,
+            'username': user_prof.username,
+            'first_name': user_prof.first_name,
+            'last_name': user_prof.last_name,
+            'email': user_prof.email,
+            'password_hash': user_prof.password_hash,
+            'age': user_prof.age,
+            'sex': user_prof.sex,
+        }
         return jsonify(user_prof_dict), 200
     else:
         return jsonify({'error': 'User profile not found'}), 404
 
-@app_views.route("/editprofile/<int:user_id>", methods=['PUT'])
+
+
+
+@app_views.route("/users/<user_id>", methods=['PUT'])
 def edit_profile(user_id):
     """ edit user profile """
     new_data = request.get_json()
@@ -60,13 +72,13 @@ def edit_profile(user_id):
         user_prof_dict = user_prof.to_dict()
         return jsonify(user_prof_dict), 200
     else:
-        return jsonify({'error': 'User profile not found'}), 404
+        return jsonify({'error': 'edit not succesful'}), 404
 
-@app_views.route("/users/<int:user_id>", methods=['DELETE'])
+@app_views.route("/users/<user_id>", methods=['DELETE'])
 def delete_profile(user_id):
     """ Delete user profile """
     if UserService.delete_user(user_id):
         return jsonify({'message': 'User profile deleted successfully'}), 200
     else:
-        return jsonify({'error': 'User profile not found'}), 404
+        return jsonify({'error': 'User profile not deleted'}), 404
 

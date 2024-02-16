@@ -6,33 +6,30 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request, make_response,current_app
 from service.cv_service import CVService
 from models.cv import CV
+import uuid
+from datetime import datetime
+from models.base import Session
 
 @app_views.route("/cv", methods=['POST'])
 def create_cv():
     """ Create a new CV"""
-    cv_data = request.get_json()
-    title = cv_data.get('title')
-    user_id = cv_data.get('user_id')
+    cv_data = request.json
 
-    if not title or not user_id:
-        return jsonify({'error': 'Title and user ID are required'}), 400
+    # Create a new CV object
+    new_cv = CV(
+        cv_id=cv_data['cv_id'],
+        title=cv_data['title'],
+        user_id=cv_data['user_id'],
+        createdAt=datetime.utcnow(),
+        UpdateddAt=datetime.utcnow()
+    )
 
-    try:
-        new_cv = CV(
-            cv_id=cv_id,
-            title=title,
-            user_id=user_id,
-            createdAt=datetime.utcnow(),
-            UpdateddAt=datetime.utcnow()
-        )
-        session = Session()
-        session.add(new_cv)
-        session.commit()
+    session = Session()
+    session.add(new_cv)
+    session.commit()
 
-        cv_dict = new_cv.to_dict()
-        return jsonify(cv_dict), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Return a response indicating success
+    return jsonify({'message': 'CV created successfully'}), 201
 
 @app_views.route("/cv/<int:user_id>", methods=['GET'])
 def cv(user_id):
