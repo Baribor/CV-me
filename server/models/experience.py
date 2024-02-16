@@ -2,11 +2,12 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from models.base import BaseModel, Base
 from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
 class Experience(BaseModel, Base):
     __tablename__ = 'experience'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True,default=uuid.uuid4)
     company = Column(String(150), nullable=False)
     position = Column(String(150), nullable=False)
     startDate = Column(Date, nullable=False)
