@@ -12,4 +12,4 @@ class SmartUrl(BaseModel):
     urlName = Column(String(150), nullable=False)
     url = Column(String(150), nullable=False)
     viewedAt = Column(TIMESTAMP, nullable=False)
-    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.cv_id'), nullable=False)
+    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)

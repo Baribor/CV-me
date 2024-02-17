@@ -12,4 +12,4 @@ class Experience(BaseModel, Base):
     position = Column(String(150), nullable=False)
     startDate = Column(Date, nullable=False)
     endDate = Column(Date, nullable=False)
-    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.cv_id'), nullable=False)
+    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)

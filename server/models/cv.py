@@ -13,7 +13,7 @@ class CV(BaseModel, Base):
     __tablename__ = 'cvs'
 
     # Define columns
-    cv_id = Column(UUID(as_uuid=True), primary_key=True,unique=True)
+    id = Column(UUID(as_uuid=True), primary_key=True,unique=True)
     title = Column(String(100), nullable=False)
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     createdAt = Column(DateTime, nullable=False)

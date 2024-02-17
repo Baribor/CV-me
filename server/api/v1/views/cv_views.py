@@ -17,7 +17,7 @@ def create_cv():
 
     # Create a new CV object
     new_cv = CV(
-        cv_id=cv_id['cv_id'],
+        id=cv_data['id'],
         title=cv_data['title'],
         user_id=cv_data['user_id'],
         createdAt=datetime.utcnow(),
@@ -31,8 +31,9 @@ def create_cv():
     # Return a response indicating success
     return jsonify({'message': 'CV created successfully'}), 201
 
-@app_views.route("/cv/<cv_id>", methods=['GET'])
-def get_cv(cv_id):
+
+@app_views.route("/cv/<id>", methods=['GET'])
+def get_cv(id):
     session = Session()
     cv = session.query(CV).filter_by(cv_id=cv_id).first()
     if cv:

@@ -8,7 +8,7 @@ class CVService:
       user = Session().query(User).get(user_id)
       if not user:
         return None
-      return Session().query(CV).filter_by(user_id=user_id).with_entities(CV.cv_id, CV.title, CV.user_id, CV.createdAt, CV.UpdateddAt).all()
+      return Session().query(CV).filter_by(user_id=user_id).with_entities(CV.id, CV.title, CV.user_id, CV.createdAt, CV.UpdateddAt).all()
 
     @staticmethod
     def create_cv(user_id, cv_data):
@@ -22,8 +22,8 @@ class CVService:
         return cv
 
     @staticmethod
-    def delete_cv(cv_id):
-        cv = Session().query(CV).get(cv_id)
+    def delete_cv(id):
+        cv = Session().query(CV).get(id)
         if cv:
             Session().delete(cv)
             Session().commit()
@@ -31,8 +31,8 @@ class CVService:
         return False
     
     @staticmethod
-    def edit_cv(cv_id, new_data):
-        cv = Session().query(CV).get(cv_id)
+    def edit_cv(id, new_data):
+        cv = Session().query(CV).get(id)
         if not cv:
             return None
         for key, value in new_data.items():
