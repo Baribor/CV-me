@@ -5,10 +5,10 @@ from models.user import User
 class CVService:
     @staticmethod
     def get_cv(user_id):
-        user = Session().query(User).get(user_id)
-        if not user:
-            return None
-        return user.cvs
+      user = Session().query(User).get(user_id)
+      if not user:
+        return None
+      return Session().query(CV).filter_by(user_id=user_id).with_entities(CV.cv_id, CV.title, CV.user_id, CV.createdAt, CV.UpdateddAt).all()
 
     @staticmethod
     def create_cv(user_id, cv_data):

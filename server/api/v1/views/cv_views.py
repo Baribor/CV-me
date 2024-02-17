@@ -17,7 +17,7 @@ def create_cv():
 
     # Create a new CV object
     new_cv = CV(
-        cv_id=cv_data['cv_id'],
+        cv_id=cv_id['cv_id'],
         title=cv_data['title'],
         user_id=cv_data['user_id'],
         createdAt=datetime.utcnow(),
@@ -31,16 +31,18 @@ def create_cv():
     # Return a response indicating success
     return jsonify({'message': 'CV created successfully'}), 201
 
-@app_views.route("/cv/<int:user_id>", methods=['GET'])
-def cv(user_id):
-    cv_data = CVService.get_cv(user_id)
-    if cv_data:
-        cv_dict = cv_data.to_dict()
-        return jsonify(cv_dict), 200
+@app_views.route("/cv/<cv_id>", methods=['GET'])
+def get_cv(cv_id):
+    session = Session()
+    cv = session.query(CV).filter_by(cv_id=cv_id).first()
+    if cv:
+        return jsonify(cv.to_dict())
     else:
         return jsonify({'error': 'CV not found'}), 404
 
-@app_views.route("/cv/<int:user_id>", methods=['PUT'])
+
+
+@app_views.route("/cv/<user_id>", methods=['PUT'])
 def editcv(user_id):
     cv_data = request.get_json()
     edited_cv = CVService.edit_cv(user_id, cv_data)
@@ -50,7 +52,7 @@ def editcv(user_id):
     else:
         return jsonify({'error': 'CV not found'}), 404
 
-@app_views.route("/cv/<int:user_id>", methods=['DELETE'])
+@app_views.route("/cv/<user_id>", methods=['DELETE'])
 def deletecv(user_id):
     deleted = CVService.delete_cv(user_id)
     if deleted:
