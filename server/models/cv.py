@@ -1,20 +1,36 @@
 #!/usr/bin/python3
-
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import UUID
+from models.base import BaseModel, Base
+from models.project import Project
+from models.education import Education
+from models.experience import Experience
+from models.skill import Skill
+from models.smarturl import SmartUrl
 
-db = SQLAlchemy()
+class CV(BaseModel, Base):
+    __tablename__ = 'cvs'
 
-class CV(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False)
-    UpdateddAt = db.Column(db.DateTime, nullable=False)
+    # Define columns
+    id = Column(UUID(as_uuid=True), primary_key=True,unique=True)
+    title = Column(String(100), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    UpdateddAt = Column(DateTime, nullable=False)
 
-    # Define the one-to-one relationships
-    project = db.relationship('Project', uselist=False, back_populates='cv')
-    skill = db.relationship('Skill', uselist=False, back_populates='cv')
-    education = db.relationship('Education', uselist=False, back_populates='cv')
-    experience = db.relationship('Experience', uselist=False, back_populates='cv')
-    smart_url = db.relationship('SmartUrl', uselist=False, back_populates='cv')
+    # Define relationships
+    projects = relationship('Project', backref='cv')
+    educations = relationship('Education', backref='cv')
+    experiences = relationship('Experience', backref='cv')
+    skills = relationship('Skill', backref='cv')
+    smart_urls = relationship('SmartUrl', backref='cv')
+
+    def to_dict(self):
+        return {
+            'id': str(self.id),
+            'title': self.title,
+            'user_id': str(self.user_id),
+            'createdAt': self.createdAt.isoformat(),
+            'UpdateddAt': self.UpdateddAt.isoformat(),
+        }

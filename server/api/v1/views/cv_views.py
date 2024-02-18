@@ -1,32 +1,62 @@
 #!/usr/bin/python3
-from flask import Blueprint, jsonify
+""" Flask routes for User object related URI subpaths using the
+app_views Blueprint.
+"""
+from api.v1.views import app_views
+from flask import Flask, jsonify, abort, request, make_response,current_app
 from service.cv_service import CVService
+from models.cv import CV
+import uuid
+from datetime import datetime
+from models.base import Session
 
-cv_bp = Blueprint('cv', __name__)
+@app_views.route("/cv", methods=['POST'])
+def create_cv():
+    """ Create a new CV"""
+    cv_data = request.json
 
-@cv_bp.route('/cv/<int:user_id>', methods=['POST'])
-def create_cv(user_id):
-    """Create CV"""
-    cv_data = request.json  # Assuming JSON data is sent in the request
-    cv = CVService.create_cv(user_id, cv_data)
-    if cv:
-        return jsonify({"message": "CV created successfully"}), 201
-    else:
-        return jsonify({"error": "Failed to create CV"}), 400
+    # Create a new CV object
+    new_cv = CV(
+        id=cv_data['id'],
+        title=cv_data['title'],
+        user_id=cv_data['user_id'],
+        createdAt=datetime.utcnow(),
+        UpdateddAt=datetime.utcnow()
+    )
 
-@cv_bp.route('/cv/<int:user_id>', methods=['GET'])
+    session = Session()
+    session.add(new_cv)
+    session.commit()
+
+    # Return a response indicating success
+    return jsonify({'message': 'CV created successfully'}), 201
+
+
+@app_views.route("/cv/<cv_id>", methods=['GET'])
 def get_cv(cv_id):
-    """Get CV"""
-    cv = CVService.get_cv(user_id)
+    session = Session()
+    cv = session.query(CV).filter_by(id=cv_id).first()
     if cv:
-        return jsonify(cv), 200
+        return jsonify(cv.to_dict())
     else:
-        return jsonify({"error": "CV not found"}), 404
+        return jsonify({'error': 'CV not found'}), 404
 
-@cv_bp.route('/cv/<int:user_id>', methods=['DELETE'])
-def delete_cv(cv_id):
-    """Delete CV"""
-    if CVService.delete_cv(user_id):
-        return jsonify({"message": "CV deleted successfully"}), 200
+
+
+@app_views.route("/cv/<cv_id>", methods=['PUT'])
+def editcv(cv_id):
+    cv_data = request.get_json()
+    edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
+    if edited_cv:
+        edited_dict = edited_cv.to_dict()
+        return jsonify(edited_cv), 200
     else:
-        return jsonify({"error": "Failed to delete CV"}), 400
+        return jsonify({'error': 'CV not found'}), 404
+
+@app_views.route("/cv/<user_id>", methods=['DELETE'])
+def deletecv(user_id):
+    deleted = CVService.delete_cv(user_id)
+    if deleted:
+        return jsonify({'message': 'CV deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'CV not found'}), 404

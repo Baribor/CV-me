@@ -1,15 +1,14 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from models.base import BaseModel,Base
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
-
-db = SQLAlchemy()
-
-class Skill(db.Model):
+class Skill(BaseModel,Base):
+    __tablename__ = 'skills'
     """Defines columns for skill class model"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    skillName = db.Column(db.String(150), nullable=False)
-    proficiency = db.Column(db.Integer, nullable=False)
-    cv_id = db.Column(db.Integer, db.ForeignKey('cv.id'), nullable=False)
-    cv = db.relationship('CV', back_populates='skill')
+    id = Column(UUID(as_uuid=True), primary_key=True,default=uuid.uuid4)
+    skillName = Column(String(150), nullable=False)
+    proficiency = Column(Integer, nullable=False)
+    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)

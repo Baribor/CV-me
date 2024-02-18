@@ -1,17 +1,15 @@
 #!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-from .base import Base
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from models.base import BaseModel, Base
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
+class Experience(BaseModel, Base):
+    __tablename__ = 'experience'
 
-db = SQLAlchemy()
-
-class Experience(db.Model):
-    """Defines columns for model class"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    company = db.Column(db.String(150), nullable=False)
-    position = db.Column(db.String(150), nullable=False)
-    startDate = db.Column(db.Date, nullable=False)
-    endDate = db.Column(db.Date, nullable=False)
-    cv_id = db.Column(db.Integer, db.ForeignKey('cv.id'), nullable=False)
-    cv = db.relationship('CV', back_populates='experience')
+    id = Column(UUID(as_uuid=True), primary_key=True,default=uuid.uuid4)
+    company = Column(String(150), nullable=False)
+    position = Column(String(150), nullable=False)
+    startDate = Column(Date, nullable=False)
+    endDate = Column(Date, nullable=False)
+    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)

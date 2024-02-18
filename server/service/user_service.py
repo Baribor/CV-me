@@ -1,48 +1,45 @@
-#!/usr/bin/python3
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from models.base import Session
+from models.user import User
 
 class UserService:
     @staticmethod
-    def view_profile(user):
-        profile_data = {
-            'id': user.id,
-            'username': user.username,
-            'email': user.email,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'age': user.age,
-            'sex': user.sex,
-            # Add more profile attributes as needed
-        }
-        return profile_data
+    def view_profile(user_id):
+        user = Session().query(User).get(user_id)
+        return user
 
     @staticmethod
-    def edit_profile(user, new_data):
+    def edit_profile(user_id, new_data):
+        session = Session() 
+        user = session.query(User).get(user_id)
+        if not user:
+            return None
         for key, value in new_data.items():
             setattr(user, key, value)
-        db.session.commit()
+        session.commit()
 
     @staticmethod
-    def create_cv(user, cv_data):
-        from models import CV  # Import your CV model
-        cv = CV(title=cv_data.get('title', ''))
-        user.cvs.append(cv)
-        db.session.add(cv)
-        db.session.commit()
-        return cv
+    def create_user(username, first_name, last_name, email, password_hash, age, sex):
+        session = Session()
+        user = User(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password_hash=password_hash,
+            age=age,
+            sex=sex
+        )
+        session.add(user)
+        session.commit()
+        return user
 
     @staticmethod
-    def delete_cv(user, cv_id):
-        cv = CV.query.get(cv_id)
-        if cv and cv in user.cvs:
-            user.cvs.remove(cv)
-            db.session.delete(cv)
-            db.session.commit()
-            return True 
-        return False  
-
-
-
+    def delete_user(user_id):
+        session = Session()
+        user = session.query(User).get(user_id)
+        if user:
+            session.delete(user)
+            session.commit()
+            return True
+        return False
 
