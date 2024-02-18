@@ -28,7 +28,7 @@ class CV(BaseModel, Base):
 
     def to_dict(self):
         return {
-            'cv_id': str(self.cv_id),
+            'id': str(self.id),
             'title': self.title,
             'user_id': str(self.user_id),
             'createdAt': self.createdAt.isoformat(),

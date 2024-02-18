@@ -23,19 +23,21 @@ class CVService:
 
     @staticmethod
     def delete_cv(id):
-        cv = Session().query(CV).get(id)
+        session = Session()
+        cv = session.query(CV).get(id)
         if cv:
-            Session().delete(cv)
-            Session().commit()
+            session.delete(cv)
+            session.commit()
             return True
         return False
     
     @staticmethod
     def edit_cv(id, new_data):
-        cv = Session().query(CV).get(id)
+        session = Session()
+        cv = session.query(CV).get(id)
         if not cv:
             return None
         for key, value in new_data.items():
             setattr(cv, key, value)
-        Session().commit()
+        session.commit()
         return cv
