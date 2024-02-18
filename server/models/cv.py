@@ -8,12 +8,13 @@ from models.education import Education
 from models.experience import Experience
 from models.skill import Skill
 from models.smarturl import SmartUrl
+import uuid
 
 class CV(BaseModel, Base):
     __tablename__ = 'cvs'
 
     # Define columns
-    id = Column(UUID(as_uuid=True), primary_key=True,unique=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     title = Column(String(100), nullable=False)
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     createdAt = Column(DateTime, nullable=False)
