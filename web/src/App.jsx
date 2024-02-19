@@ -3,6 +3,11 @@ import HomePage from "./pages/Home"
 import MainLayout from "./layouts/MainLayout"
 import SignInPage from "./pages/SigninPage"
 import ContactUsPage from "./pages/ContactUsPage"
+import SignUpPage from "./pages/SignupPage"
+import ForgotPasswordPage from "./pages/ForgotPasswordPage"
+import DashboardLayout from "./components/layout/DashboardLayout"
+import DashBoard from "./pages/dashboard/DashboardPage"
+import MyCVsPage from "./pages/dashboard/MyCVsPage"
 
 function App() {
 
@@ -14,7 +19,14 @@ function App() {
             <Route index element={<HomePage />} />
 
             <Route element={<SignInPage />} path="signin" />
+            <Route element={<SignUpPage />} path="signup" />
+            <Route element={<ForgotPasswordPage />} path="forgot-password" />
             <Route element={<ContactUsPage />} path="contact-us" />
+
+            <Route element={<DashboardLayout />} path="dashboard">
+              <Route element={<DashBoard />} index />
+              <Route element={<MyCVsPage />} path="cv" />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

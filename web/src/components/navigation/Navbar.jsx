@@ -4,11 +4,11 @@ import { Link } from "react-router-dom"
 const NavBar = () => {
 
 	return (
-		<nav className="h-[56px] bg-primary_text text-white flex justify-between items-center px-4">
+		<nav className="h-[56px] bg-blue-950 text-white flex justify-between items-center px-4 shadow-md">
 			{/* Logo */}
 			<div>
 				<Link to="/">
-					<span className="text-primary font-extrabold font-[cursive] text-3xl">CV ME</span>
+					<span className="text-white font-extrabold font-[cursive] text-3xl">CV ME</span>
 				</Link>
 			</div>
 
