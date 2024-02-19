@@ -17,7 +17,6 @@ def create_cv():
 
     # Create a new CV object
     new_cv = CV(
-        id=cv_data['id'],
         title=cv_data['title'],
         user_id=cv_data['user_id'],
         createdAt=datetime.utcnow(),
