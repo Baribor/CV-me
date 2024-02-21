@@ -6,15 +6,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import make_response,jsonify
-from api.v1.views import app_views
-from models.base import Session
+from .views import app_views
+from ...models.base import Session
+from flask_bcrypt import Bcrypt
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cv-me-db:cv-me-pwd@localhost:5432/cv-me-db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
-
+bcrypt = Bcrypt(app)
 # migrate = Migrate(app, db)
 
 # Register blueprints
@@ -37,6 +38,15 @@ def not_found(error):
     """
     return make_response(jsonify({'error': "Not found"}), 404)
 
+
+@app.errorhandler(401)
+def unauthorized(error):
+    """401 - AUTHORIZED ACCESS
+    """
+    return make_response(jsonify({'message': "Unauthorized access"}), 401)
+
+
+print(app.url_map)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='3000', debug=True)
                          

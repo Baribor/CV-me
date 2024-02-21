@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
-from models.base import BaseModel,Base
+from .base import BaseModel, Base
 import uuid
 
 class Project(BaseModel,Base):

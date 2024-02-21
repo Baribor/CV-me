@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
-from models.base import BaseModel, Base
+from .base import BaseModel, Base
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 

@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """ Blueprint for API """
 from flask import Blueprint
+from .auth import auth_views
 
 app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
+app_views.register_blueprint(auth_views)
 
-from api.v1.views.index import *
-from api.v1.views.cv_views import *
-from api.v1.views.users import *
+from .users import *
+from .cv_views import *
+from . import *

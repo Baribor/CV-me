@@ -1,10 +1,10 @@
-from models.base import Session
-from models.user import User
+from ..models.base import Session
+from ..models.user import User
 
 class UserService:
     @staticmethod
-    def view_profile(user_id):
-        user = Session().query(User).get(user_id)
+    def view_profile(username):
+        user = Session().query(User).filter_by(username=username).first()
         return user
 
     @staticmethod
@@ -18,17 +18,15 @@ class UserService:
         session.commit()
 
     @staticmethod
-    def create_user(username, first_name, last_name, email, password_hash, age, sex):
+    def create_user(username, first_name, last_name, email, password):
         session = Session()
         user = User(
             username=username,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password_hash=password_hash,
-            age=age,
-            sex=sex
         )
+        user.set_password(password)
         session.add(user)
         session.commit()
         return user

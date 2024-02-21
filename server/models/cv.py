@@ -2,12 +2,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
-from models.base import BaseModel, Base
-from models.project import Project
-from models.education import Education
-from models.experience import Experience
-from models.skill import Skill
-from models.smarturl import SmartUrl
+from .base import BaseModel, Base
+from .project import Project
+from .education import Education
+from .experience import Experience
+from .skill import Skill
+from .smarturl import SmartUrl
 import uuid
 
 class CV(BaseModel, Base):
