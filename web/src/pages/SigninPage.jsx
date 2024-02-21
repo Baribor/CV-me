@@ -8,6 +8,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
+import { makeAPIRequest } from "../utils";
+import { ENDPOINTS, TOKEN_KEY } from "../utils/constants";
+import { enqueueSnackbar } from "notistack";
+import { useSetRecoilState } from "recoil";
+import { user } from "../store";
 
 const validationSchema = yup.object({
 	email: yup.string().email().required(),
@@ -17,6 +22,7 @@ const validationSchema = yup.object({
 const SignInPage = () => {
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false)
+	const setUser = useSetRecoilState(user);
 
 	const formik = useFormik({
 		initialValues: {
@@ -24,12 +30,22 @@ const SignInPage = () => {
 			password: '',
 		},
 		validationSchema,
-		onSubmit: (values, helpers) => {
-			console.log('submitting now');
+		onSubmit: async (values, helpers) => {
+			const data = await makeAPIRequest({
+				path: ENDPOINTS.login,
+				method: 'POST',
+				body: values
+			}) 
 
-			setTimeout(() => {
-				navigate("/dashboard")
-			}, 5000)
+			if (data.data) {
+				localStorage.setItem(TOKEN_KEY, data.data.token);
+				enqueueSnackbar({
+					message: data.message,
+					variant: "success"
+				})
+				setUser(data.data)
+				setTimeout(() => navigate("/dashboard"), 1000);
+			}
 		}
 	})
 	return (

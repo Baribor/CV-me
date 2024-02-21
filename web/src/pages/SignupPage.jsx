@@ -9,6 +9,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import { enqueueSnackbar } from "notistack";
+import { makeAPIRequest } from "../utils";
+import { ENDPOINTS } from "../utils/constants";
 
 const validationSchema = yup.object({
 	firstName: yup.string().required(),
@@ -31,14 +33,28 @@ const SignUpPage = () => {
 			password: '',
 		},
 		validationSchema,
-		onSubmit: (values, helper) => {
-			setTimeout(() => {
+		onSubmit: async (values, helper) => {
+			const payload = {
+				username: values.username,
+				first_name: values.firstName,
+				last_name: values.lastName,
+				email: values.email,
+				password: values.password,
+			}
+
+			const res = await makeAPIRequest({
+				path: ENDPOINTS.signup,
+				method: "POST",
+				body: payload,
+			})
+
+			if (res.data) {
 				enqueueSnackbar({
-					message: "Account creation successful",
-					variant: "success"
+					message: res.message,
+					variant: "success",
 				})
-				setTimeout(() => navigate("/signin"), 1500);
-			}, 5000)
+				setTimeout(() => navigate("/signin"), 1000);
+			}
 		}
 	})
 	return (

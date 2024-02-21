@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import AppBar from '@mui/material/AppBar';
@@ -10,20 +10,27 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavItem from "../components/navigation/NavItem";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { user } from "../store";
+import { ENDPOINTS, TOKEN_KEY } from "../utils/constants";
+import { makeAPIRequest } from "../utils";
 
 
 
 const drawerWidth = 240;
 
 export default function DashboardLayout(props) {
+	const [currentUser, setCurrentUser] = useRecoilState(user);
 	const navigate = useNavigate()
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = useState(false);
-
+	const token = localStorage.getItem(TOKEN_KEY);
+	console.log(currentUser)
 	const handleLogout = () => {
-		//localStorage.removeItem(ADMIN_KEY)
+		localStorage.removeItem(TOKEN_KEY)
+		setCurrentUser(null);
 		navigate("/signin", {
 			replace: true
 		})
@@ -36,6 +43,21 @@ export default function DashboardLayout(props) {
 	/* if (!token) {
 		return <Navigate to="/auth/admin/login" replace={true} />;
 	} */
+	useEffect(() => {
+		if (!currentUser && token) {
+			makeAPIRequest({
+				path: ENDPOINTS.get_profile,
+			}).then((data) => {
+				if (data.data) {
+					setCurrentUser(data.data)
+				}
+			})
+		}
+	}, [])
+
+	if (!currentUser && !token) {
+		return <Navigate to={"/signin"} />
+	}
 
 	const drawer = (
 		<div>
@@ -89,7 +111,11 @@ export default function DashboardLayout(props) {
 					>
 						<MenuIcon />
 					</IconButton>
-
+					<div className="flex justify-end w-full">
+						<button className="bg-red-400 px-2 rounded-full active:scale-[.98]" onClick={handleLogout}>
+							Logout
+						</button>
+					</div>
 				</Toolbar>
 			</AppBar>
 			<Box
