@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import AppBar from '@mui/material/AppBar';
@@ -11,7 +11,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from "react";
-import NavItem from "../navigation/NavItem";
+import NavItem from "../components/navigation/NavItem";
+
 
 
 const drawerWidth = 240;
@@ -38,9 +39,18 @@ export default function DashboardLayout(props) {
 
 	const drawer = (
 		<div>
-			<Toolbar />
+			<Toolbar sx={{
+				backgroundColor: '#172554'
+			}}>
+				<div>
+					<Link to="/">
+						<span className="text-white font-extrabold font-[cursive] text-3xl">CV ME</span>
+					</Link>
+				</div>
+			</Toolbar>
+
 			<Divider />
-			<div className="w-full border-r-2 select-none p-3 flex flex-col gap-1">
+			<div className="w-full select-none p-3 flex flex-col gap-1">
 
 				<NavItem text="Dashboard" to="" handleClick={handleDrawerToggle}>
 					<DashboardIcon />
@@ -65,11 +75,11 @@ export default function DashboardLayout(props) {
 				sx={{
 					width: { sm: `calc(100% - ${drawerWidth}px)` },
 					ml: { sm: `${drawerWidth}px` },
-					backgroundColor: "white",
-					color: "black"
 				}}
 			>
-				<Toolbar>
+				<Toolbar sx={{
+					backgroundColor: '#172554'
+				}}>
 					<IconButton
 						color="inherit"
 						aria-label="open drawer"
@@ -79,9 +89,7 @@ export default function DashboardLayout(props) {
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="h6" noWrap component="div" sx={{ color: "blue" }}>
-						Dashboard
-					</Typography>
+
 				</Toolbar>
 			</AppBar>
 			<Box
@@ -111,7 +119,7 @@ export default function DashboardLayout(props) {
 					variant="permanent"
 					sx={{
 						display: { xs: 'none', sm: 'block' },
-						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, border: 'none' },
 					}}
 					open
 				>

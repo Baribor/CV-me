@@ -1,10 +1,26 @@
+import TextField from "@mui/material/TextField"
 
-export default function InputField({ label, containerStyle, ...props }) {
+const style = {
+	"& label.Mui-focused": {
+		color: "#2196f3",
+	},
+	"& .MuiOutlinedInput-root": {
+		"&.Mui-focused fieldset": {
+			borderColor: "#2196f3",
+		},
+	},
+	".MuiInputBase-input": {}
+};
 
+const CVmeTextField = ({ containerStyle, children, ...props }) => {
 	return (
-		<div className={containerStyle + " flex flex-col"}>
-			<label htmlFor={props.id} className="font-semibold">{label}</label>
-			<input {...props} className="border-primary border h-12 rounded-lg focus:border-2 px-2 select-none outline-none text-gray-800" />
+		<div className={containerStyle + " relative"}>
+			<TextField {...props} sx={style} fullWidth />
+			<div className="absolute right-0 top-[50%] -translate-y-[50%] mr-2">
+				{children}
+			</div>
 		</div>
 	)
-}
+};
+
+export default CVmeTextField;

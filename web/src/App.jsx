@@ -5,9 +5,9 @@ import SignInPage from "./pages/SigninPage"
 import ContactUsPage from "./pages/ContactUsPage"
 import SignUpPage from "./pages/SignupPage"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage"
-import DashboardLayout from "./components/layout/DashboardLayout"
 import DashBoard from "./pages/dashboard/DashboardPage"
 import MyCVsPage from "./pages/dashboard/MyCVsPage"
+import DashboardLayout from "./layouts/DashboardLayout"
 
 function App() {
 
@@ -22,11 +22,10 @@ function App() {
             <Route element={<SignUpPage />} path="signup" />
             <Route element={<ForgotPasswordPage />} path="forgot-password" />
             <Route element={<ContactUsPage />} path="contact-us" />
-
-            <Route element={<DashboardLayout />} path="dashboard">
-              <Route element={<DashBoard />} index />
-              <Route element={<MyCVsPage />} path="cv" />
-            </Route>
+          </Route>
+          <Route element={<DashboardLayout />} path="/dashboard">
+            <Route element={<DashBoard />} index />
+            <Route element={<MyCVsPage />} path="cv" />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -6,7 +6,6 @@ export default function NavItem({ text, to, handleClick, children }) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-
 	const isCurrentPath = () => {
 		const paths = location.pathname.split("/")
 		const lastPath = paths[paths.length - 1]
@@ -17,7 +16,7 @@ export default function NavItem({ text, to, handleClick, children }) {
 
 		<div className={
 			classNames('hover:border-gray-200', 'p-3', 'rounded-md', 'relative', 'hover:shadow-md', 'flex', 'gap-2', 'duration-200', "border-white", "border", {
-				"bg-blue-600": isCurrentPath(),
+				"bg-primary": isCurrentPath(),
 				"text-white": isCurrentPath()
 			})
 		} onClick={() => {

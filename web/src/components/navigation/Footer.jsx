@@ -3,7 +3,7 @@
 const Footer = () => {
 
 	return (
-		<footer className="bg-black h-[98px]">
+		<footer className="bg-black h-full">
 
 		</footer>
 	)
