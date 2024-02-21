@@ -19,7 +19,7 @@ bcrypt = Bcrypt(app)
 # migrate = Migrate(app, db)
 
 # Register blueprints
-cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+cors = CORS(app)
 
 @app.route('/api/v1/status', methods= ['GET'])
 def status():
