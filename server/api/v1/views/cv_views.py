@@ -4,11 +4,11 @@ app_views Blueprint.
 """
 from . import app_views
 from flask import Flask, jsonify, abort, request, make_response,current_app
-from ....service.cv_service import CVService
-from ....models.cv import CV
+from service.cv_service import CVService
+from models.cv import CV
 import uuid
 from datetime import datetime
-from ....models.base import Session
+from models.base import Session
 
 @app_views.route("/cv", methods=['POST'])
 def create_cv():

@@ -33,12 +33,12 @@ class User(BaseModel, Base):
         }
 
     def set_password(self, password):
-        from ..api.v1.app import bcrypt
+        from api.v1.app import bcrypt
         self.password_hash = bcrypt.generate_password_hash(
             password).decode('utf-8')
 
     def check_password(self, password):
-        from ..api.v1.app import bcrypt
+        from api.v1.app import bcrypt
         print(self.password_hash)
         return bcrypt.check_password_hash(self.password_hash, password)
 
@@ -47,7 +47,7 @@ class User(BaseModel, Base):
         Generates the Auth Token
         :return: string
         """
-        from ..api.v1.app import app
+        from api.v1.app import app
         try:
             payload = {
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3),

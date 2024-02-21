@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import make_response,jsonify
 from .views import app_views
-from ...models.base import Session
+from models.base import Session
 from flask_bcrypt import Bcrypt
 import os
 

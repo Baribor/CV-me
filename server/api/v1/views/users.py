@@ -2,12 +2,12 @@
 """ Flask routes for User object related URI subpaths using the
 app_views Blueprint.
 """
-from ..views import app_views
+from . import app_views
 from flask import Flask, jsonify, abort, request, make_response, current_app, g
-from ....service.user_service import UserService
-from ....models.user import User
-from ....models.base import Session
-from ..middlewares.authMiddleware import require_authentication
+from service.user_service import UserService
+from models.user import User
+from models.base import Session
+from api.v1.middlewares.authMiddleware import require_authentication
 
 
 @app_views.route("/profile", methods=['GET'])

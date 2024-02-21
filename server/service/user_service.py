@@ -1,5 +1,5 @@
-from ..models.base import Session
-from ..models.user import User
+from models.base import Session
+from models.user import User
 
 class UserService:
     @staticmethod

@@ -1,6 +1,6 @@
-from ..models.base import Session
-from ..models.cv import CV
-from ..models.user import User
+from models.base import Session
+from models.cv import CV
+from models.user import User
 
 class CVService:
     @staticmethod

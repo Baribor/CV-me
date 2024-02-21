@@ -3,9 +3,9 @@
 app_views Blueprint.
 """
 from flask import Flask, jsonify, abort, request, make_response, current_app
-from ....service.user_service import UserService
-from ....models.user import User
-from ....models.base import Session
+from service.user_service import UserService
+from models.user import User
+from models.base import Session
 from flask import Blueprint
 
 auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
