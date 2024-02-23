@@ -13,4 +13,14 @@ class Project(BaseModel,Base):
     description = Column(String(150), nullable=False)
     startDate = Column(Date, nullable=False)
     endDate = Column(Date, nullable=False)
-    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False) 
+    cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)
+
+    def to_dict(self):
+        """Converts the Project object to a dictionary."""
+        return {
+            'id': str(self.id),
+            'projectName': self.projectName,
+            'description': self.description,
+            'startDate': self.startDate.strftime('%Y-%m-%d'),
+            'endDate': self.endDate.strftime('%Y-%m-%d')
+        }

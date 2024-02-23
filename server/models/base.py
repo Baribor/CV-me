@@ -9,10 +9,10 @@ import dotenv
 dotenv.load_dotenv()
 # Define the database URI'
 # 'postgresql://cv-me-db:cv-me-pwd@localhost:5432/cv-me-db'
-DATABASE_URI = "postgresql://postgres:theamazon@localhost:5432/cvme"
-print('DB', DATABASE_URI)
+DATABASE_URL ="postgresql://cvme:cvme88@localhost:5432/cvme"
+print('DB', DATABASE_URL)
 # Create the engine
-engine = create_engine(DATABASE_URI)
+engine = create_engine(DATABASE_URL)
 
 # Create a session maker
 Session = sessionmaker(bind=engine)

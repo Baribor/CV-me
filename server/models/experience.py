@@ -13,3 +13,15 @@ class Experience(BaseModel, Base):
     startDate = Column(Date, nullable=False)
     endDate = Column(Date, nullable=False)
     cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)
+
+    def to_dict(self):
+        """Converts the Experience object to a dictionary."""
+        return {
+            'id': str(self.id),
+            'company': self.company,
+            'position': self.position,
+            'startDate': self.startDate.strftime('%Y-%m-%d'),
+            'endDate': self.endDate.strftime('%Y-%m-%d'),
+            'cv_id': str(self.cv_id)
+        }
+

@@ -9,7 +9,9 @@ from flask import make_response,jsonify
 from .views import app_views
 from models.base import Session
 from flask_bcrypt import Bcrypt
-import os
+from dotenv import load_dotenv
+import dotenv
+dotenv.load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
