@@ -8,4 +8,7 @@ app_views.register_blueprint(auth_views)
 
 from .users import *
 from .cv_views import *
+from .users import *
+from .project import *
+from .education import *
 from . import *

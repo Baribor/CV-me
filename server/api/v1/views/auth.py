@@ -3,9 +3,6 @@
 app_views Blueprint.
 """
 from flask import Flask, jsonify, abort, request, make_response, current_app
-from service.user_service import UserService
-from models.user import User
-from models.base import Session
 from flask import Blueprint
 
 auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
@@ -14,6 +11,9 @@ auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
 @auth_views.route("/signup", methods=['POST'])
 def create_user():
     """ Create a new user"""
+    from service.user_service import UserService
+    from models.user import User
+    from models.base import Session
     user_data = request.get_json()
     user_in_db = Session().query(User).filter_by(
         username=user_data.get('username'), email=user_data.get('email')).first()
@@ -41,6 +41,8 @@ def create_user():
 @auth_views.route("/login", methods=['POST'])
 def login():
     "Login a user"
+    from models.user import User
+    from models.base import Session
     body = request.get_json()
     user = Session().query(User).filter_by(email=body.get('email')).first()
     if not user:
