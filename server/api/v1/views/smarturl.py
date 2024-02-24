@@ -4,7 +4,7 @@ app_views Blueprint.
 """
 from . import app_views
 from flask import jsonify, request
-from models.smarturl import SmartURL  # Import SmartURL model
+from models.smarturl import SmartUrl
 from models.base import Session
 from datetime import datetime
 

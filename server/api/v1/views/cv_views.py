@@ -2,7 +2,6 @@
 """ Flask routes for User object related URI subpaths using the
 app_views Blueprint.
 """
-from . import app_views
 from flask import Flask, jsonify, abort, request, make_response,current_app, g
 from service.cv_service import CVService
 from models.cv import CV
@@ -10,9 +9,14 @@ import uuid
 from datetime import datetime
 from models.base import Session
 from models.user import User
+from flask import Blueprint
 from api.v1.middlewares.authMiddleware import require_authentication
 
-@app_views.route("/cv", methods=['POST'])
+
+cv_views = Blueprint('app_views', __name__, url_prefix='/cv')
+
+
+@cv_views.route("/", methods=['POST'])
 @require_authentication
 def create_cv():
     """ Create a new CV"""
@@ -34,7 +38,7 @@ def create_cv():
     return jsonify({'message': 'CV created successfully'}), 201
 
 
-@app_views.route("/cv/<cv_id>", methods=['GET'])
+@cv_views.route("/getcv/<cv_id>", methods=['GET'])
 def get_cv(cv_id):
     session = Session()
     cv = session.query(CV).filter_by(id=cv_id).first()
@@ -45,7 +49,7 @@ def get_cv(cv_id):
 
 
 
-@app_views.route("/cv/<cv_id>", methods=['PUT'])
+@cv_views.route("/editcv/<cv_id>", methods=['PUT'])
 def editcv(cv_id):
     cv_data = request.get_json()
     edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
@@ -55,9 +59,9 @@ def editcv(cv_id):
     else:
         return jsonify({'error': 'CV not found'}), 404
 
-@app_views.route("/cv/<user_id>", methods=['DELETE'])
-def deletecv(user_id):
-    deleted = CVService.delete_cv(user_id)
+@cv_views.route("/deletecv/<cv_id>", methods=['DELETE'])
+def deletecv(cv_id):
+    deleted = CVService.delete_cv(cv_id)
     if deleted:
         return jsonify({'message': 'CV deleted successfully'}), 200
     else:
