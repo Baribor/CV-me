@@ -3,17 +3,21 @@
 app_views Blueprint.
 """
 from . import app_views
-from flask import Flask, jsonify, abort, request, make_response,current_app
+from flask import Flask, jsonify, abort, request, make_response,current_app, g
 from service.cv_service import CVService
 from models.cv import CV
 import uuid
 from datetime import datetime
 from models.base import Session
+from models.user import User
+from api.v1.middlewares.authMiddleware import require_authentication
 
 @app_views.route("/cv", methods=['POST'])
+@require_authentication
 def create_cv():
     """ Create a new CV"""
     cv_data = request.json
+    session = Session()
 
     # Create a new CV object
     new_cv = CV(
@@ -23,7 +27,6 @@ def create_cv():
         UpdateddAt=datetime.utcnow()
     )
 
-    session = Session()
     session.add(new_cv)
     session.commit()
 

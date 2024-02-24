@@ -11,4 +11,6 @@ from .cv_views import *
 from .users import *
 from .project import *
 from .education import *
+from .experience import *
+from .smarturl import *
 from . import *

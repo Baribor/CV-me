@@ -3,22 +3,27 @@
 app_views Blueprint.
 """
 from . import app_views
-from flask import jsonify, request
+from flask import jsonify, request,g
 from models.project import Project
 from models.base import Session
+from models.user import User
 from datetime import datetime
+from api.v1.middlewares.authMiddleware import require_authentication
+
 
 @app_views.route("/project", methods=['POST'])
 def create_project():
     """ Create a new Project"""
     project_data = request.json
+    # cv_id = g.user.get('cv_id')
 
     # Create a new object
     new_project = Project(
         projectName=project_data.get('projectName'),
         description=project_data.get('description'),
         startDate=datetime.strptime(project_data.get('startDate'), '%Y-%m-%d'),
-        endDate=datetime.strptime(project_data.get('endDate'), '%Y-%m-%d')
+        endDate=datetime.strptime(project_data.get('endDate'), '%Y-%m-%d'),
+        cv_id=project_data.get('cv_id')
     )
 
     session = Session()

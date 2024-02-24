@@ -17,9 +17,9 @@ def create_education():
     new_education = Education(
         institution=education_data.get('institution'),
         degree=education_data.get('degree'),
-        description=education_data.get('description'),
         startDate=datetime.strptime(education_data.get('startDate'), '%Y-%m-%d'),
-        endDate=datetime.strptime(education_data.get('endDate'), '%Y-%m-%d')
+        endDate=datetime.strptime(education_data.get('endDate'), '%Y-%m-%d'),
+        cv_id=education_data.get('cv_id')
     )
 
     session = Session()
