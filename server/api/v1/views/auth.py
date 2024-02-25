@@ -4,6 +4,8 @@ app_views Blueprint.
 """
 from flask import Flask, jsonify, abort, request, make_response, current_app
 from flask import Blueprint
+from api.v1.middlewares.authMiddleware import require_authentication
+
 
 auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
 

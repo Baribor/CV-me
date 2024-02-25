@@ -20,6 +20,6 @@ class SmartUrl(BaseModel):
             'id': str(self.id),
             'urlName': self.urlName,
             'url': self.url,
-            'viewdAt': self.viewedAt.
+            'viewdAt': self.viewedAt,
             'cv_id': str(self.cv_id)
             }

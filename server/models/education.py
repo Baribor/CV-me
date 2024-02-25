@@ -21,7 +21,6 @@ class Education(BaseModel,Base):
             'id': str(self.id),
             'institution': self.institution,
             'degree': self.degree,
-            'description': self.description,
             'startDate': self.startDate.strftime('%Y-%m-%d'),
             'endDate': self.endDate.strftime('%Y-%m-%d')
         }

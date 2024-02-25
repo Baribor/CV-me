@@ -31,10 +31,8 @@ def userprofile():
         return jsonify({'error': 'User profile not found'}), 404
 
 
-
-
-@app_views.route("/users/<user_id>", methods=['PUT'])
-def edit_profile(user_id):
+@app_views.route("/users/", methods=['PUT'])
+def edit_user(user_id):
     """ edit user profile """
     new_data = request.get_json()
     user_prof = UserService.edit_profile(user_id, new_data)
@@ -44,7 +42,7 @@ def edit_profile(user_id):
     else:
         return jsonify({'error': 'edit not succesful'}), 404
 
-@app_views.route("/users/<user_id>", methods=['DELETE'])
+@app_views.route("/delete/<user_id>", methods=['DELETE'])
 def delete_profile(user_id):
     """ Delete user profile """
     if UserService.delete_user(user_id):

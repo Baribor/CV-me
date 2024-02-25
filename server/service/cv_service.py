@@ -10,16 +10,6 @@ class CVService:
         return None
       return Session().query(CV).filter_by(user_id=user_id).with_entities(CV.id, CV.title, CV.user_id, CV.createdAt, CV.UpdateddAt).all()
 
-    @staticmethod
-    def create_cv(user_id, cv_data):
-        user = Session().query(User).get(user_id)
-        if not user:
-            return None
-        cv = CV(title=cv_data.get('title', ''))
-        user.cvs.append(cv)
-        Session().add(cv)
-        Session().commit()
-        return cv
 
     @staticmethod
     def delete_cv(id):

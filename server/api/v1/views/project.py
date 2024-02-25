@@ -2,20 +2,26 @@
 """ Flask routes for Project object related URI subpaths using the
 app_views Blueprint.
 """
-from . import app_views
+
 from flask import jsonify, request,g
 from models.project import Project
 from models.base import Session
 from models.user import User
 from datetime import datetime
+from flask import Blueprint
 from api.v1.middlewares.authMiddleware import require_authentication
 
 
-@app_views.route("/project", methods=['POST'])
+project_views = Blueprint('api_v1_blueprinit', __name__, url_prefix='/project')
+
+
+
+@project_views.route("/", methods=['POST'])
+@require_authentication
 def create_project():
+    
     """ Create a new Project"""
     project_data = request.json
-    # cv_id = g.user.get('cv_id')
 
     # Create a new object
     new_project = Project(
@@ -33,7 +39,7 @@ def create_project():
     # Return a response indicating success
     return jsonify({'message': 'Project created successfully'}), 201
 
-@app_views.route("/project/<pj_id>", methods=['GET'])
+@project_views.route("/getproject/<pj_id>", methods=['GET'])
 def get_project(pj_id):
     session = Session()
     project = session.query(Project).filter_by(id=pj_id).first()
@@ -42,7 +48,7 @@ def get_project(pj_id):
     else:
         return jsonify({'error': 'Project not found'}), 404
 
-@app_views.route("/project/<pj_id>", methods=['PUT'])
+@project_views.route("/edit/<pj_id>", methods=['PUT'])
 def edit_project(pj_id):
     project_data = request.get_json()
     session = Session()
@@ -55,7 +61,7 @@ def edit_project(pj_id):
     else:
         return jsonify({'error': 'Project not found'}), 404
 
-@app_views.route("/project/<pj_id>", methods=['DELETE'])
+@project_views.route("/delete_project/<pj_id>", methods=['DELETE'])
 def delete_project(pj_id):
     session = Session()
     project = session.query(Project).filter_by(id=pj_id).first()

@@ -12,11 +12,10 @@ from models.user import User
 from flask import Blueprint
 from api.v1.middlewares.authMiddleware import require_authentication
 
+cv_views = Blueprint('api_v1_blueprint', __name__, url_prefix='/api/v1')
 
-cv_views = Blueprint('app_views', __name__, url_prefix='/cv')
 
-
-@cv_views.route("/", methods=['POST'])
+@cv_views.route("/create", methods=['POST'])
 @require_authentication
 def create_cv():
     """ Create a new CV"""
@@ -38,8 +37,8 @@ def create_cv():
     return jsonify({'message': 'CV created successfully'}), 201
 
 
-@cv_views.route("/getcv/<cv_id>", methods=['GET'])
-def get_cv(cv_id):
+@cv_views.route("/cv/", methods=['GET'])
+def cv():
     session = Session()
     cv = session.query(CV).filter_by(id=cv_id).first()
     if cv:
@@ -49,8 +48,8 @@ def get_cv(cv_id):
 
 
 
-@cv_views.route("/editcv/<cv_id>", methods=['PUT'])
-def editcv(cv_id):
+@cv_views.route("/edit/<cv_id>", methods=['PUT'])
+def edit(cv_id):
     cv_data = request.get_json()
     edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
     if edited_cv:
@@ -59,7 +58,7 @@ def editcv(cv_id):
     else:
         return jsonify({'error': 'CV not found'}), 404
 
-@cv_views.route("/deletecv/<cv_id>", methods=['DELETE'])
+@cv_views.route("/delete/<cv_id>", methods=['DELETE'])
 def deletecv(cv_id):
     deleted = CVService.delete_cv(cv_id)
     if deleted:
