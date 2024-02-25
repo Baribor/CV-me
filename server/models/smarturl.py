@@ -13,3 +13,13 @@ class SmartUrl(BaseModel):
     url = Column(String(150), nullable=False)
     viewedAt = Column(TIMESTAMP, nullable=False)
     cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)
+
+    def to_dict(self):
+        """Converts the skill object to a dictionary."""
+        return {
+            'id': str(self.id),
+            'urlName': self.urlName,
+            'url': self.url,
+            'viewdAt': self.viewedAt.
+            'cv_id': str(self.cv_id)
+            }

@@ -12,3 +12,13 @@ class Skill(BaseModel,Base):
     skillName = Column(String(150), nullable=False)
     proficiency = Column(Integer, nullable=False)
     cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False)
+
+    def to_dict(self):
+        """Converts the skill object to a dictionary."""
+        return {
+            'id': str(self.id),
+            'skillName': self.skillName,
+            'proficiency': self.proficiency,
+            'cv_id': str(self.cv_id)
+        }
+

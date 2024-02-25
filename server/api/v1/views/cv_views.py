@@ -23,6 +23,7 @@ def create_cv():
     user = UserService.view_profile(username)
     print(user)
     cv_data = request.json
+    session = Session()
 
     # Create a new CV object
     new_cv = CV(
@@ -33,7 +34,6 @@ def create_cv():
         # UpdateddAt=datetime.utcnow()
     )
 
-    session = Session()
     session.add(new_cv)
     session.commit()
 
