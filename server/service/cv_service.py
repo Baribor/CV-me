@@ -31,3 +31,9 @@ class CVService:
             setattr(cv, key, value)
         session.commit()
         return cv
+
+    @staticmethod
+    def find_first(**kwargs):
+        session = Session()
+        cv = session.query(CV).filter_by(**kwargs).first()
+        return cv

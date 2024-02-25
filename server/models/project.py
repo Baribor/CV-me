@@ -5,10 +5,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from .base import BaseModel, Base
 import uuid
 
-class Project(BaseModel,Base):
+
+class Project(BaseModel, Base):
     __tablename__ = 'projects'
 
-    id = Column(UUID(as_uuid=True), primary_key=True,default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     projectName = Column(String(150), nullable=False)
     description = Column(String(150), nullable=False)
     startDate = Column(Date, nullable=False)

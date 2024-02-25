@@ -7,7 +7,7 @@ from flask import Blueprint
 from api.v1.middlewares.authMiddleware import require_authentication
 
 
-auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
+auth_views = Blueprint('auth_views', __name__, url_prefix='/auth')
 
 
 @auth_views.route("/signup", methods=['POST'])
