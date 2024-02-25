@@ -8,7 +8,7 @@ from models.user import User
 from models.base import Session
 from flask import Blueprint
 
-auth_views = Blueprint('app_views', __name__, url_prefix='/auth')
+auth_views = Blueprint('auth_views', __name__, url_prefix='/auth')
 
 
 @auth_views.route("/signup", methods=['POST'])

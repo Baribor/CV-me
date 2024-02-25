@@ -14,3 +14,12 @@ class Project(BaseModel,Base):
     startDate = Column(Date, nullable=False)
     endDate = Column(Date, nullable=False)
     cv_id = Column(UUID(as_uuid=True), ForeignKey('cvs.id'), nullable=False) 
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'projectName': self.projectName,
+            'description': self.description,
+            'startDate': self.startDate.isoformat(),
+            'endDate': self.endDate.isoformat(),
+        }

@@ -1,26 +1,36 @@
 #!/usr/bin/python3
 """ Flask routes for User object related URI subpaths using the
-app_views Blueprint.
+cv_views Blueprint.
 """
-from . import app_views
-from flask import Flask, jsonify, abort, request, make_response,current_app
+from flask import Flask, jsonify, abort, request, make_response, current_app, Blueprint, g
 from service.cv_service import CVService
+from service.user_service import UserService
 from models.cv import CV
 import uuid
 from datetime import datetime
 from models.base import Session
+from api.v1.middlewares.authMiddleware import AuthMiddleware
 
-@app_views.route("/cv", methods=['POST'])
+cv_views = Blueprint('cv_views', __name__, url_prefix="/cv")
+
+
+@cv_views.route("/", methods=['POST'], )
 def create_cv():
     """ Create a new CV"""
+    AuthMiddleware().authenticate()
+    username = g.user['sub']
+    print(username)
+    user = UserService.view_profile(username)
+    print(user)
     cv_data = request.json
 
     # Create a new CV object
     new_cv = CV(
         title=cv_data['title'],
-        user_id=cv_data['user_id'],
-        createdAt=datetime.utcnow(),
-        UpdateddAt=datetime.utcnow()
+        user_id=user.id,
+
+        # createdAt=datetime.utcnow(),
+        # UpdateddAt=datetime.utcnow()
     )
 
     session = Session()
@@ -31,18 +41,39 @@ def create_cv():
     return jsonify({'message': 'CV created successfully'}), 201
 
 
-@app_views.route("/cv/<cv_id>", methods=['GET'])
+@cv_views.route("/<cv_id>", methods=['GET'])
 def get_cv(cv_id):
+    AuthMiddleware().authenticate()
     session = Session()
-    cv = session.query(CV).filter_by(id=cv_id).first()
+    user = UserService.view_profile(g.user['sub'])
+    cv = session.query(CV).filter_by(id=cv_id, user_id=user.id).first()
     if cv:
-        return jsonify(cv.to_dict())
+        data = {
+            **cv.to_dict(),
+            'projects': [p.to_dict() for p in cv.projects],
+            'educations': [e.to_dict() for e in cv.educations],
+            'skills': [e.to_dict() for e in cv.skills],
+            'experiences': [e.to_dict() for e in cv.experiences],
+        }
+        return jsonify({'message': 'CV rerieved', 'data': data})
     else:
         return jsonify({'error': 'CV not found'}), 404
 
 
+@cv_views.route("/", methods=['GET'])
+def get_all_cvs():
+    AuthMiddleware().authenticate()
+    session = Session()
+    user = UserService.view_profile(g.user['sub'])
+    cvs = session.query(CV).filter_by(user_id=user.id).all()
+    if cvs:
+        return jsonify([cv.to_dict() for cv in cvs])
+    else:
+        return jsonify({'error': 'CV not found'}), 404
 
-@app_views.route("/cv/<cv_id>", methods=['PUT'])
+
+@cv_views.route("/<cv_id>", methods=['PUT'])
+# @require_authentication
 def editcv(cv_id):
     cv_data = request.get_json()
     edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
@@ -52,7 +83,9 @@ def editcv(cv_id):
     else:
         return jsonify({'error': 'CV not found'}), 404
 
-@app_views.route("/cv/<user_id>", methods=['DELETE'])
+
+@cv_views.route("/<user_id>", methods=['DELETE'])
+# @require_authentication
 def deletecv(user_id):
     deleted = CVService.delete_cv(user_id)
     if deleted:
