@@ -14,8 +14,6 @@ from api.v1.middlewares.authMiddleware import AuthMiddleware
 cv_views = Blueprint('cv_views', __name__, url_prefix="/cv")
 
 
-@cv_views.route("/create", methods=['POST'])
-
 @cv_views.route("/", methods=['POST'], )
 def create_cv():
     """ Create a new CV"""
@@ -71,11 +69,12 @@ def get_all_cvs():
     if cvs:
         return jsonify([cv.to_dict() for cv in cvs])
     else:
-        return jsonify({'error': 'CV not found'}),404
-@cv_views.route("/edit/<cv_id>", methods=['PUT'])
+        return jsonify({'error': 'CV not found'}), 404
+
 
 @cv_views.route("/<cv_id>", methods=['PUT'])
 def editcv(cv_id):
+    AuthMiddleware().authenticate()
     cv_data = request.get_json()
     edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
     if edited_cv:
@@ -86,8 +85,8 @@ def editcv(cv_id):
 
 
 @cv_views.route("/<user_id>", methods=['DELETE'])
-# @require_authentication
 def deletecv(user_id):
+    AuthMiddleware().authenticate()
     deleted = CVService.delete_cv(user_id)
     if deleted:
         return jsonify({'message': 'CV deleted successfully'}), 200
