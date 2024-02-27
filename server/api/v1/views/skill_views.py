@@ -17,5 +17,56 @@ def create_skill(cv_id):
     if not cv:
         return jsonify({'message': 'No CV found'}), 404
     skill = SkillService.create_skill(**payload, cv_id=cv_id)
-    return jsonify({'message': 'Skill added successfully', 'data': skill.to_dict()}), 201
+    return jsonify({'message': 'Skill added successfully', 'data': skill.to_dict()}), 
 
+@skill_views.route('/<cv_id>/skill/<skill_id>', methods=['GET'])
+def get_skill(cv_id, skill_id):
+    AuthMiddleware().authenticate()
+    username = g.user['sub']
+    user = UserService.view_profile(username)
+    cv = CVService.find_first(user_id=user.id, id=cv_id)
+    if not cv:
+        return jsonify({'message': 'No CV found'}), 404
+    skill = SkillService.get_skill(skill_id)
+    if not skill:
+        return jsonify({'message': 'No skills found'}), 404
+    return jsonify({'data': skill})
+
+
+@skill_views.route('/<cv_id>/skill/<skill_id>', methods=['PUT'])
+def edit_eexperience(cv_id, experience_id):
+    AuthMiddleware().authenticate()
+    username = g.user['sub']
+    user = UserService.view_profile(username)
+    cv = CVService.find_first(user_id=user.id, id=cv_id)
+    if not cv:
+        return jsonify({'message': 'No CV found'}), 404
+
+    payload = request.get_json()
+
+    new_data ={
+            'description': payload.get('description'),
+            'proficiency': payload.get('proficiency'),
+            'startDate': payload.get('startDate',"%Y-%m-%dT%H:%M:%S.%fZ"),
+            'endDate': payload.get('endDate',"%Y-%m-%dT%H:%M:%S.%fZ")
+    }
+
+    updated_skill = SkillService.edit_skill(skill_id, new_data)
+    if not updated_experience:
+        return jsonify({'message': 'No experience found'}), 404
+
+    return jsonify({'message': 'Skill updated successfully', 'data': updated_experience.to_dict()})
+
+
+@skill_views.route('/<cv_id>/skill/<skill_id>', methods=['DELETE'])
+def delete_skill(cv_id, skill_id):
+    AuthMiddleware().authenticate()
+    username = g.user['sub']
+    user = UserService.view_profile(username)
+    cv = CVService.find_first(user_id=user.id, id=cv_id)
+    if not cv:
+        return jsonify({'message': 'No CV found'}), 404
+    deleted = Skillervice.delete_skill(skill_id)
+    if not deleted:
+        return jsonify({'message': 'No skill found'}), 404
+    return jsonify({'message': 'skill deleted successfully'}), 200

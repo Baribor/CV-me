@@ -73,22 +73,30 @@ def get_all_cvs():
 
 
 @cv_views.route("/<cv_id>", methods=['PUT'])
-def editcv(cv_id):
+def edit_cv(cv_id):
     AuthMiddleware().authenticate()
-    cv_data = request.get_json()
-    edited_cv = CVService.edit_cv(cv_id, new_data=cv_data)
+    user = UserService.view_profile(g.user['sub'])
+    cv = Session().query(CV).filter_by(id=cv_id, user_id=user.id).first()
+    if not cv:
+        return jsonify({'error': 'CV not found'}), 404
+    edited_cv = CVService.edit_cv(cv_id, new_data=request.json)
     if edited_cv:
         edited_dict = edited_cv.to_dict()
-        return jsonify(edited_cv), 200
+        return jsonify(edited_dict), 200
     else:
-        return jsonify({'error': 'CV not found'}), 404
+        return jsonify({'error': 'Failed to edit CV'}), 500
 
 
-@cv_views.route("/<user_id>", methods=['DELETE'])
-def deletecv(user_id):
+@cv_views.route("/<cv_id>", methods=['DELETE'])
+def delete_cv(cv_id):
     AuthMiddleware().authenticate()
-    deleted = CVService.delete_cv(user_id)
+    user = UserService.view_profile(g.user['sub'])
+    cv = Session().query(CV).filter_by(id=cv_id, user_id=user.id).first()
+    if not cv:
+        return jsonify({'error': 'CV not found'}), 404
+    deleted = CVService.delete_cv(cv_id)
     if deleted:
         return jsonify({'message': 'CV deleted successfully'}), 200
     else:
-        return jsonify({'error': 'CV not found'}), 404
+        return jsonify({'error': 'Failed to delete CV'}), 500
+

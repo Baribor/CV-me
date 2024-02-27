@@ -28,10 +28,11 @@ class EducationService:
 
     @staticmethod
     def delete_education(education_id):
-        education = Session().query(Education).get(education_id)
+        session = Session()
+        education = session.query(Education).get(education_id)
         if education:
-            Session().delete(education)
-            Session().commit()
+            session.delete(education)
+            session.commit()
             return True
         return False
     

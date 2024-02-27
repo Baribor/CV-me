@@ -28,10 +28,11 @@ class ExperienceService:
 
     @staticmethod
     def delete_experience(experience_id):
-        experience = Session().query(Experience).get(experience_id)  
+        session = Session()
+        experience = session.query(Experience).get(experience_id)  
         if experience:
-            Session().delete(experience)
-            Session().commit()
+            session.delete(experience)
+            session.commit()
             return True
         return False
     
