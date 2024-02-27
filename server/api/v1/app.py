@@ -7,7 +7,6 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import make_response,jsonify
 from .views import app_views
-from .views import api_v1_blueprint
 from models.base import Session
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
@@ -18,7 +17,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
-app.register_blueprint(api_v1_blueprint)
 bcrypt = Bcrypt(app)
 # migrate = Migrate(app, db)
 
