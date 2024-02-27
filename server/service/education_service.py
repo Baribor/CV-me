@@ -39,6 +39,6 @@ class EducationService:
     def find_first(**kwargs):
         session = Session()
         education = session.query(Education).filter_by(**kwargs).first()
-        return education
+        return educatioin
 
 

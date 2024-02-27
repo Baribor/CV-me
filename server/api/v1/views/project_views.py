@@ -4,6 +4,7 @@ from service.user_service import UserService
 from service.cv_service import CVService
 from service.project_service import ProjectService
 from sqlalchemy import and_
+from uuid import UUID
 
 
 project_views = Blueprint("project_views", __name__, url_prefix='/cv')
@@ -38,7 +39,7 @@ def get_project(cv_id,project_id):
     ProjectService.find_first(cv_id=cv_id, id=project_id)
     if not project:
         return jsonify({'message': 'No project found'}), 404
-    return jsonify({'data': project.to_dict()})
+    return jsonify({'data': project})
 
 
 @project_views.route('/<cv_id>/project/<project_id>', methods=['PUT'])

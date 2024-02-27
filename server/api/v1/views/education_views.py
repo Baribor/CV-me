@@ -3,7 +3,7 @@ from api.v1.middlewares.authMiddleware import AuthMiddleware
 from service.user_service import UserService
 from service.cv_service import CVService
 from service.education_service import EducationService  
-
+from datetime import datetime
 education_views = Blueprint("education_views", __name__, url_prefix='/cv')
 
 
@@ -30,7 +30,7 @@ def get_education(cv_id, education_id):
     education = EducationService.get_education(education_id)
     if not education:
         return jsonify({'message': 'No education found'}), 404
-    return jsonify({'data': education.to_dict()})
+    return jsonify({'data': education})
 
 @education_views.route('/<cv_id>/education/<education_id>', methods=['PUT'])
 def edit_education(cv_id, education_id):
@@ -40,11 +40,22 @@ def edit_education(cv_id, education_id):
     cv = CVService.find_first(user_id=user.id, id=cv_id)
     if not cv:
         return jsonify({'message': 'No CV found'}), 404
+    
     payload = request.get_json()
-    updated_education = EducationService.edit_education(education_id, **payload)
+    
+    new_data ={
+            'institution': payload.get('institution'),
+            'degree': payload.get('degree'),
+            'startDate': payload.get('startDate',"%Y-%m-%dT%H:%M:%S.%fZ"),
+            'endDate': payload.get('endDate',"%Y-%m-%dT%H:%M:%S.%fZ")
+    }
+
+    updated_education = EducationService.edit_education(education_id, new_data)
     if not updated_education:
         return jsonify({'message': 'No education found'}), 404
+
     return jsonify({'message': 'Education updated successfully', 'data': updated_education.to_dict()})
+
 
 @education_views.route('/<cv_id>/education/<education_id>', methods=['DELETE'])
 def delete_education(cv_id, education_id):
