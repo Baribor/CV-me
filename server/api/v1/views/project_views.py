@@ -3,9 +3,10 @@ from api.v1.middlewares.authMiddleware import AuthMiddleware
 from service.user_service import UserService
 from service.cv_service import CVService
 from service.project_service import ProjectService
+from sqlalchemy import and_
+
 
 project_views = Blueprint("project_views", __name__, url_prefix='/cv')
-
 
 @project_views.route('/<cv_id>/project', methods=['POST'])
 def create_project(cv_id):
@@ -21,14 +22,20 @@ def create_project(cv_id):
 
 
 @project_views.route('/<cv_id>/project/<project_id>', methods=['GET'])
-def get_project(cv_id, project_id):
+def get_project(cv_id,project_id):
+    try:
+        cv_uuid = UUID(cv_id)
+        project_uuid = UUID(project_id)
+    except ValueError:
+        return jsonify({'message': 'Invalid UUID format'}), 400
+
     AuthMiddleware().authenticate()
     username = g.user['sub']
     user = UserService.view_profile(username)
     cv = CVService.find_first(user_id=user.id, id=cv_id)
     if not cv:
         return jsonify({'message': 'No CV found'}), 404
-    project = ProjectService.find_first(cv_id=cv_id, id=project_id)
+    ProjectService.find_first(cv_id=cv_id, id=project_id)
     if not project:
         return jsonify({'message': 'No project found'}), 404
     return jsonify({'data': project.to_dict()})

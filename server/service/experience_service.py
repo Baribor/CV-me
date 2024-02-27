@@ -34,6 +34,9 @@ class ExperienceService:
             Session().commit()
             return True
         return False
-
-
-
+    
+    @staticmethod
+    def find_first(**kwargs):
+        session = Session()
+        experience = session.query(Experience).filter_by(**kwargs).first()
+        return experience

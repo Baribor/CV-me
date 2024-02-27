@@ -34,3 +34,10 @@ class SkillService:
             Session().commit()
             return True
         return False
+
+    @staticmethod
+    def find_first(**kwargs):
+        session = Session()
+        skill = session.query(Skill).filter_by(**kwargs).first()
+        return skill
+

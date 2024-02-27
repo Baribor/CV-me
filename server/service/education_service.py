@@ -34,4 +34,11 @@ class EducationService:
             Session().commit()
             return True
         return False
+    
+    @staticmethod
+    def find_first(**kwargs):
+        session = Session()
+        education = session.query(Education).filter_by(**kwargs).first()
+        return education
+
 

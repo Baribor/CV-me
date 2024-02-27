@@ -36,4 +36,12 @@ class ProjectService:
             Session().commit()
             return True
         return False
+    
+    @staticmethod
+    def find_first(cv_id, id):
+        session = Session()
+        project = session.query(Project).filter_by(cv_id=cv_id, id=id).first()
+        return project
+
+
 
