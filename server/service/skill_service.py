@@ -4,11 +4,11 @@ from datetime import datetime
 
 class SkillService:
     @staticmethod
-    def create_skill(skillName=None, proficiency=None, startDate=None, endDate=None, cv_id=None):
-        skill = Skill(skillName=skillName, proficiency=proficiency, startDate=datetime.strptime(
-            startDate, "%Y-%m-%dT%H:%M:%S.%fZ"), endDate=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ"), cv_id=cv_id)
-        Session().add(skill)
-        Session().commit()
+    def create_skill(skillName=None, proficiency=None, cv_id=None):
+        skill = Skill(skillName=skillName, proficiency=proficiency, cv_id=cv_id)
+        session = Session()
+        session.add(skill)
+        session.commit()
         return skill
 
     @staticmethod

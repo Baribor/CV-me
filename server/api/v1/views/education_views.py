@@ -42,12 +42,20 @@ def edit_education(cv_id, education_id):
         return jsonify({'message': 'No CV found'}), 404
     
     payload = request.get_json()
+
+    start_date_str = payload.get('startDate')
+    end_date_str = payload.get('endDate')
+
+    # Checking if start date and end date are provided, otherwise using current date
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%dT%H:%M:%S.%fZ') if start_date_str else datetime.utcnow()
+    end_date = datetime.strptime(end_date_str, '%Y-%m-%dT%H:%M:%S.%fZ') if end_date_str else datetime.utcnow()
+
     
     new_data ={
             'institution': payload.get('institution'),
             'degree': payload.get('degree'),
-            'startDate': payload.get('startDate',"%Y-%m-%dT%H:%M:%S.%fZ"),
-            'endDate': payload.get('endDate',"%Y-%m-%dT%H:%M:%S.%fZ")
+            'startDate': start_date,
+            'endDate': end_date
     }
 
     updated_education = EducationService.edit_education(education_id, new_data)

@@ -27,7 +27,7 @@ def get_experience(cv_id, experience_id):
     cv = CVService.find_first(user_id=user.id, id=cv_id)
     if not cv:
         return jsonify({'message': 'No CV found'}), 404
-    experience = ExperienceService.get_experience(education_id)
+    experience = ExperienceService.get_experience(experience_id)
     if not experience:
         return jsonify({'message': 'No education found'}), 404
     return jsonify({'data': experience})
@@ -46,8 +46,8 @@ def edit_eexperience(cv_id, experience_id):
     new_data ={
             'company': payload.get('company'),
             'position': payload.get('company'),
-            'startDate': payload.get('startDate',"%Y-%m-%dT%H:%M:%S.%fZ"),
-            'endDate': payload.get('endDate',"%Y-%m-%dT%H:%M:%S.%fZ")
+            'startDate': payload.get('startDate'),
+            'endDate': payload.get('endDate')
     }
 
     updated_experience = ExperienceService.edit_experience(experience_id, new_data)

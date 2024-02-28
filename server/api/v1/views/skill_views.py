@@ -46,9 +46,7 @@ def edit_eexperience(cv_id, experience_id):
 
     new_data ={
             'description': payload.get('description'),
-            'proficiency': payload.get('proficiency'),
-            'startDate': payload.get('startDate',"%Y-%m-%dT%H:%M:%S.%fZ"),
-            'endDate': payload.get('endDate',"%Y-%m-%dT%H:%M:%S.%fZ")
+            'proficiency': payload.get('proficiency')
     }
 
     updated_skill = SkillService.edit_skill(skill_id, new_data)

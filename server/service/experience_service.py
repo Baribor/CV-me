@@ -7,8 +7,9 @@ class ExperienceService:
     def create_experience(company=None, position=None, startDate=None, endDate=None, cv_id=None):
         experience = Experience(company=company, position=position, startDate=datetime.strptime(
             startDate, "%Y-%m-%dT%H:%M:%S.%fZ"), endDate=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ"), cv_id=cv_id)
-        Session().add(experience)
-        Session().commit()
+        session = Session()
+        session.add(experience)
+        session.commit()
         return experience
 
     @staticmethod

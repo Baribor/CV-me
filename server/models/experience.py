@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from .base import BaseModel, Base
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
+from datetime import datetime
 
 class Experience(BaseModel, Base):
     __tablename__ = 'experience'
@@ -16,12 +17,14 @@ class Experience(BaseModel, Base):
 
     def to_dict(self):
         """Converts the Experience object to a dictionary."""
+        start_date = datetime.strptime(self.startDate, '%Y-%m-%d')
+        end_date = datetime.strptime(self.endDate, '%Y-%m-%d')
+
         return {
             'id': str(self.id),
             'company': self.company,
             'position': self.position,
-            'startDate': self.startDate.strftime('%Y-%m-%d'),
-            'endDate': self.endDate.strftime('%Y-%m-%d'),
+            'startDate': self.startDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            'endDate': self.endDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
             'cv_id': str(self.cv_id)
         }
-
