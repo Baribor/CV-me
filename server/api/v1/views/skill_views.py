@@ -34,7 +34,7 @@ def get_skill(cv_id, skill_id):
 
 
 @skill_views.route('/<cv_id>/skill/<skill_id>', methods=['PUT'])
-def edit_eexperience(cv_id, experience_id):
+def edit_skill(cv_id, skill_id):
     AuthMiddleware().authenticate()
     username = g.user['sub']
     user = UserService.view_profile(username)
@@ -50,10 +50,10 @@ def edit_eexperience(cv_id, experience_id):
     }
 
     updated_skill = SkillService.edit_skill(skill_id, new_data)
-    if not updated_experience:
+    if not updated_skill:
         return jsonify({'message': 'No experience found'}), 404
 
-    return jsonify({'message': 'Skill updated successfully', 'data': updated_experience.to_dict()})
+    return jsonify({'message': 'Skill updated successfully', 'data': updated_skill.to_dict()})
 
 
 @skill_views.route('/<cv_id>/skill/<skill_id>', methods=['DELETE'])

@@ -33,7 +33,7 @@ def get_experience(cv_id, experience_id):
     return jsonify({'data': experience})
 
 @experience_views.route('/<cv_id>/experience/<experience_id>', methods=['PUT'])
-def edit_eexperience(cv_id, experience_id):
+def edit_experience(cv_id, experience_id):
     AuthMiddleware().authenticate()
     username = g.user['sub']
     user = UserService.view_profile(username)
