@@ -19,17 +19,12 @@ class Education(BaseModel,Base):
 
     def to_dict(self):
         """Converts the Education object to a dictionary."""
-        start_date_str = self.startDate
-        end_date_str = self.endDate
-
-        # Convert start date and end date strings to datetime objects
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
 
         return {
             'id': str(self.id),
             'institution': self.institution,
             'degree': self.degree,
-            'startDate': self.startDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-            'endDate': self.endDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            'startDate': self.start_Date.strftime('%Y-%m-%d'),
+            'endDate': self.endDate.strftime('%Y-%m-%d')
+
         }

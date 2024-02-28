@@ -55,7 +55,7 @@ def edit_education(cv_id, education_id):
     if not updated_education:
         return jsonify({'message': 'No education found'}), 404
 
-    return jsonify({'message': 'Education updated successfully', 'data': updated_education.to_dict()})
+    return jsonify({'message': 'Education updated successfully', 'data': updated_education})
 
 
 @education_views.route('/<cv_id>/education/<education_id>', methods=['DELETE'])

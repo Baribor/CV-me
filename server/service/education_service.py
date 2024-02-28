@@ -7,8 +7,9 @@ class EducationService:
     def create_education(institution=None, degree=None, startDate=None, endDate=None, cv_id=None):
         education = Education(institution=institution, degree=degree, startDate=datetime.strptime(
             startDate, "%Y-%m-%dT%H:%M:%S.%fZ"), endDate=datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S.%fZ"), cv_id=cv_id)
-        Session().add(education)
-        Session().commit()
+        session = Session()
+        session.add(education)
+        session.commit()
         return education
 
     @staticmethod
@@ -23,7 +24,7 @@ class EducationService:
             for key, value in new_data.items():
                 setattr(education, key, value)
             Session().commit()
-            return education
+            return education.to_dict()
         return None
 
     @staticmethod

@@ -64,7 +64,7 @@ def delete_skill(cv_id, skill_id):
     cv = CVService.find_first(user_id=user.id, id=cv_id)
     if not cv:
         return jsonify({'message': 'No CV found'}), 404
-    deleted = Skillervice.delete_skill(skill_id)
+    deleted = SkillService.delete_skill(skill_id)
     if not deleted:
         return jsonify({'message': 'No skill found'}), 404
     return jsonify({'message': 'skill deleted successfully'}), 200
