@@ -7,7 +7,7 @@ export default function DashBoard() {
 
 	return (
 		<div>
-			<h2 className="text-3xl">Welcome <span className="text-primary font-bold">{currentUser.first_name}</span></h2>
+			<h2 className="text-3xl">Welcome <span className="text-primary font-bold">{currentUser?.first_name}</span></h2>
 		</div>
 	)
 }

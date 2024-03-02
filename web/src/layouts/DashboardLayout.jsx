@@ -55,9 +55,9 @@ export default function DashboardLayout(props) {
 		}
 	}, [])
 
-	if (!currentUser && !token) {
+	/* if (!currentUser && !token) {
 		return <Navigate to={"/signin"} />
-	}
+	} */
 
 	const drawer = (
 		<div>
