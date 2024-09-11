@@ -1,5 +1,6 @@
 CV-me
-![image](https://github.com/user-attachments/assets/ca9c97e6-0a7c-4d23-9fb9-91784546cfca)
+
+![Blog Coach Course Creator Facebook Cover](https://github.com/user-attachments/assets/98b14df7-bc76-46e0-8b89-66e31602bb95)
 
 CV-me aims to address the challenge of providing an easy and effective way for individuals to create and apply for jobs . This web application allows users to create and send their cv's to potential recruiters in an easy and effecient way,instead of spending hours on this task.
 
